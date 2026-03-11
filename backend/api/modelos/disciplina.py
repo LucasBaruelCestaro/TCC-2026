@@ -50,7 +50,16 @@ class disciplina_modelo:
         if not isinstance(value, str):
             raise TypeError("Nome da disciplina deve ser uma string")
 
-        value = value.strip()
+        value = value.strip().title()
+
+        if len(value) < 3:
+            raise ValueError("Nome da disciplina deve ter ao menos 3 caracteres")
+        
+        for caracter in value:
+            if caracter.isnumeric():
+                raise ValueError("Nome da disciplina não pode conter números")
+        
+
         self.__nome_disciplina = value
 
 
@@ -83,6 +92,9 @@ class disciplina_modelo:
             raise TypeError("Turma deve ser uma string")
 
         value = value.strip()
+
+        if value < 10:
+            raise ValueError("Turma deve ter ao menos 10 caracteres")
         self.__turma = value
 
 
@@ -97,5 +109,12 @@ class disciplina_modelo:
 
         if not isinstance(value, list):
             raise TypeError("Alunos deve ser uma lista")
+        
+        for matricula in value:
+            if not isinstance(matricula, int):
+                raise TypeError("Matrícula do aluno deve ser int")
+        
+            if not len(str(matricula)) == 8:
+                raise ValueError("Matrícula deve ter 8 dígitos")
 
         self.__alunos = value

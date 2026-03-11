@@ -1,3 +1,4 @@
+import re
 import aluno
 
 class questao_modelo:
@@ -33,7 +34,21 @@ class questao_modelo:
         if not isinstance(value, str):
             raise TypeError("Nome responsável deve ser uma string")
 
-        value = value.strip()
+        value = value.strip().title()
+
+        if not value.isalpha():
+            raise ValueError("Nome do responsável não pode conter números")
+        
+        if len(value) < 5:
+            raise ValueError("Nome do responsável deve ter ao menos 5 caracteres")
+
+        if len(value.split()) < 2:
+            raise ValueError("Nome do responsável deve ter ao menos um sobrenome")
+        
+        for nome in value.split(): 
+            if len(nome) < 2:
+                raise ValueError("Cada parte do nome deve conter ao menos 2 caracteres")
+        
         self.__nome_responsavel = value
 
     @property
@@ -49,6 +64,15 @@ class questao_modelo:
             raise TypeError("Email responsável deve ser uma string")
 
         value = value.strip()
+
+        if len(value) not in range(5,151):
+            raise ValueError("Email deve conter de 5 a 150 caracteres")
+        
+        padrao = "^[a-zA-Z0-9][a-zA-Z0-9._%+-]{0,63}@[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+
+        if not re.match(padrao,value):
+            raise ValueError("Email inválido")
+        
         self.__email_responsavel = value
 
     @property
@@ -72,6 +96,10 @@ class questao_modelo:
 
         if not isinstance(value, str):
             raise TypeError("Telefone do responsável deve ser uma string")
+        
+        value = ''.join(filter(str.isdigit, str(value)))
 
-        value = value.strip()
+        if len(value) < 10:
+            raise ValueError("Telefone deve ter ao menos 10 caracteres")
+
         self.__telefone_responsavel = value

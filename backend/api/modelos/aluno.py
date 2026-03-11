@@ -1,3 +1,5 @@
+import re
+
 class aluno_modelo:
     def __init__(self):
         
@@ -6,7 +8,7 @@ class aluno_modelo:
         self.__nome_aluno = None #string
         self.__turma = None #string
         self.__serie = None #int
-        self.__matriculado = None #bool
+        self.__situacao = None #string
         self.__email_aluno = None #string
 
     @property
@@ -36,6 +38,9 @@ class aluno_modelo:
 
         if not isinstance(value, int):
             raise TypeError("Matrícula do aluno deve ser int")
+        
+        if not len(str(value)) == 8:
+            raise ValueError("Matrícula deve ter 8 dígitos")
 
         self.__matricula_aluno = value
 
@@ -52,7 +57,24 @@ class aluno_modelo:
         if not isinstance(value, str):
             raise TypeError("Nome do aluno deve ser uma string")
 
-        value = value.strip()
+        value = value.strip().title()
+
+        if not value.isalpha():
+            raise ValueError("Nome do aluno não pode conter números")
+        
+        if len(value) < 5:
+            raise ValueError("Nome do aluno deve ter ao menos 5 caracteres")
+
+        if len(value.split()) < 2:
+            raise ValueError("Nome do aluno deve ter ao menos um sobrenome")
+        
+        for nome in value.split(): 
+            if len(nome) < 2:
+                raise ValueError("Cada parte do nome deve conter ao menos 2 caracteres")
+        
+        if not value.isalpha():
+            raise ValueError("Nome do aluno não pode conter números")
+        
         self.__nome_aluno = value
 
 
@@ -69,6 +91,9 @@ class aluno_modelo:
             raise TypeError("Turma deve ser uma string")
 
         value = value.strip()
+
+        if value < 10:
+            raise ValueError("Turma deve ter ao menos 10 caracteres")
         self.__turma = value
 
 
@@ -83,23 +108,29 @@ class aluno_modelo:
 
         if not isinstance(value, int):
             raise TypeError("Série deve ser int")
-
+        
+        if value not in [1,2,3]:
+            raise ValueError("Série inválida")
+        
         self.__serie = value
 
 
     @property
-    def matriculado(self):
-        return self.__matriculado
+    def situacao(self):
+        return self.__situacao
 
-    @matriculado.setter
-    def matriculado(self, value):
+    @situacao.setter
+    def situacao(self, value):
         if value is None:
             raise ValueError("Matriculado nulo")
 
-        if not isinstance(value, bool):
-            raise TypeError("Matriculado deve ser bool")
+        if not isinstance(value, str):
+            raise TypeError("Matriculado deve ser uma string")
+        
+        if not value.isalpha():
+            raise ValueError("Matriculado não pode conter números")
 
-        self.__matriculado = value
+        self.__situacao = value
 
 
     @property
@@ -115,4 +146,13 @@ class aluno_modelo:
             raise TypeError("Email do aluno deve ser uma string")
 
         value = value.strip()
+
+        if len(value) not in range(5,151):
+            raise ValueError("Email deve conter de 5 a 150 caracteres")
+        
+        padrao = "^[a-zA-Z0-9][a-zA-Z0-9._%+-]{0,63}@[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+
+        if not re.match(padrao,value):
+            raise ValueError("Email inválido")
+
         self.__email_aluno = value
