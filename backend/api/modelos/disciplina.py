@@ -53,12 +53,7 @@ class disciplina_modelo:
         value = value.strip().title()
 
         if len(value) < 3:
-            raise ValueError("Nome da disciplina deve ter ao menos 3 caracteres")
-        
-        for caracter in value:
-            if caracter.isnumeric():
-                raise ValueError("Nome da disciplina não pode conter números")
-        
+            raise ValueError("Nome da disciplina deve ter ao menos 3 caracteres")   
 
         self.__nome_disciplina = value
 

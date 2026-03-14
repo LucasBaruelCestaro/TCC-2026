@@ -3,7 +3,7 @@ import re
 class professor_modelo:
     def __init__(self):
         self.__id_hash = None #string
-        self.__registro_professor = None #string
+        self.__registro_professor = None #int
         self.__nome_professor = None #string
         self.__email_professor = None #string
 
@@ -32,8 +32,8 @@ class professor_modelo:
         if value is None:
             raise ValueError("Registro do professor nulo")
 
-        if not isinstance(value, str):
-            raise TypeError("Registro do professor deve ser uma string")
+        if not isinstance(value, int):
+            raise TypeError("Registro do professor deve ser um int")
 
         value = value.strip()
         self.__registro_professor = value
@@ -52,9 +52,6 @@ class professor_modelo:
             raise TypeError("Nome do professor deve ser uma string")
 
         value = value.strip().title()
-
-        if not value.isalpha():
-            raise ValueError("Nome do professor não pode conter números")
         
         if len(value) < 5:
             raise ValueError("Nome do professor deve ter ao menos 5 caracteres")
@@ -75,20 +72,19 @@ class professor_modelo:
 
     @email_professor.setter
     def email_professor(self, value):
-        if value is None:
-            raise ValueError("Email do professor nulo")
+        if value != None:
+            
+            if not isinstance(value, str):
+                raise TypeError("Email do professor deve ser uma string")
 
-        if not isinstance(value, str):
-            raise TypeError("Email do professor deve ser uma string")
+            value = value.strip()
 
-        value = value.strip()
+            if len(value) not in range(5,151):
+                raise ValueError("Email deve conter de 5 a 150 caracteres")
+            
+            padrao = "^[a-zA-Z0-9][a-zA-Z0-9._%+-]{0,63}@[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 
-        if len(value) not in range(5,151):
-            raise ValueError("Email deve conter de 5 a 150 caracteres")
-        
-        padrao = "^[a-zA-Z0-9][a-zA-Z0-9._%+-]{0,63}@[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-
-        if not re.match(padrao,value):
-            raise ValueError("Email inválido")
-        
-        self.__email_professor = value
+            if not re.match(padrao,value):
+                raise ValueError("Email inválido")
+            
+            self.__email_professor = value

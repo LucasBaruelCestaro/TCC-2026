@@ -35,9 +35,6 @@ class questao_modelo:
             raise TypeError("Nome responsável deve ser uma string")
 
         value = value.strip().title()
-
-        if not value.isalpha():
-            raise ValueError("Nome do responsável não pode conter números")
         
         if len(value) < 5:
             raise ValueError("Nome do responsável deve ter ao menos 5 caracteres")
@@ -51,29 +48,28 @@ class questao_modelo:
         
         self.__nome_responsavel = value
 
+    
     @property
     def email_responsavel(self):
         return self.__email_responsavel
 
     @email_responsavel.setter
     def email_responsavel(self, value):
-        if value is None:
-            raise ValueError("Email responsável nulo")
+        if value != None:
+            if not isinstance(value, str):
+                raise TypeError("Email responsável deve ser uma string")
 
-        if not isinstance(value, str):
-            raise TypeError("Email responsável deve ser uma string")
+            value = value.strip()
 
-        value = value.strip()
+            if len(value) not in range(5,151):
+                raise ValueError("Email deve conter de 5 a 150 caracteres")
+            
+            padrao = "^[a-zA-Z0-9][a-zA-Z0-9._%+-]{0,63}@[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 
-        if len(value) not in range(5,151):
-            raise ValueError("Email deve conter de 5 a 150 caracteres")
-        
-        padrao = "^[a-zA-Z0-9][a-zA-Z0-9._%+-]{0,63}@[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-
-        if not re.match(padrao,value):
-            raise ValueError("Email inválido")
-        
-        self.__email_responsavel = value
+            if not re.match(padrao,value):
+                raise ValueError("Email inválido")
+            
+            self.__email_responsavel = value
 
     @property
     def aluno(self):

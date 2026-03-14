@@ -1,10 +1,10 @@
-import re     #Biblioteca para o uso de regex
+import professor
 
 class questao_modelo:
     def __init__(self):
 
         self.__id_questao = None
-        self.__id_professor = None   #id do professor que cadastrou a questão no sistema
+        self.__professor = None   #id do professor que cadastrou a questão no sistema
         self.__assunto = None
         self.__disciplina = None
         self.__palavras_chave = None
@@ -25,7 +25,7 @@ class questao_modelo:
             raise ValueError("ID questão nulo")
         
         if not isinstance(value, int):
-            raise TypeError("ID questão deve ser uma string")
+            raise TypeError("ID questão deve ser int")
         
         if value <= 0:
             raise ValueError("Id deve ser um número maior que zero")
@@ -33,17 +33,15 @@ class questao_modelo:
         self.__id_questao = value
 
     
-    #GET/SET DO ID PROFESSOR
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    #
+    @property
+    def professor(self):
+        return self.__professor
+
+    @professor.setter
+    def professor(self, value):
+        if not isinstance(value, professor):
+            raise ValueError("Professor deve ser uma instância válida")
+        self.__professor = value
 
     #GET/SET ASSUNTO
     @property
@@ -80,23 +78,19 @@ class questao_modelo:
         if not isinstance(value, list):
             raise TypeError("Diciplina(as) devem ser uma lista")
 
-        palavras_normalizadas = []
+        value = [disciplina.strip().lower() for disciplina in value]
 
         for disciplina in value:
             if not isinstance(disciplina, str):
                 raise TypeError("Cada disciplina deve ser uma string")
-
-            disciplina = disciplina.strip().title()
 
             if len(disciplina) < 2:
                 raise ValueError("Disciplina muito curta")
             
             if disciplina.isnumeric():
                 raise ValueError("Disciplina deve conter letras")
-
-            palavras_normalizadas.append(disciplina)
         
-        self.__disciplina = palavras_normalizadas[:]
+        self.__disciplina = value
 
     #GET/SET PALAVRAS-CHAVE
     @property
@@ -111,23 +105,19 @@ class questao_modelo:
         if not isinstance(value, list):
             raise TypeError("Palavras-chave devem ser uma lista")
         
-        palavras_normalizadas = []
+        value = [palavra.strip().lower() for palavra in value]
 
         for palavra in value:
             if not isinstance(palavra, str):
                 raise TypeError("Cada palavra-chave deve ser uma string")
-
-            palavra = palavra.strip().title()
 
             if len(palavra) < 3:
                 raise ValueError("Palavra-chave muito curta")
             
             if palavra.isnumeric():
                 raise ValueError("Palavra-chave deve conter letras")
-
-            palavras_normalizadas.append(palavra)
         
-        self.__palavras_chave = palavras_normalizadas[:]
+        self.__palavras_chave = value
 
     #GET/SET TIPO DA QUESTÃO
     @property
@@ -201,16 +191,15 @@ class questao_modelo:
 
     @alternativas.setter
     def alternativas(self, value):
-        if value is None:
-            raise ValueError("Alternativas nula")
-        
-        if not isinstance(value, list):
-            raise TypeError("Alternativas deve ser list")
-        #FALTA AS REGRAS DE NEGÓCIO
-        #
-        #
-        #
-        #
+        if self.tipo_questao == "Objetiva":
+            if value is None:
+                raise ValueError("Alternativas nula")
+            
+            if not isinstance(value, list):
+                raise TypeError("Alternativas deve ser list")
+            
+            value = [alternativa.strip() for alternativa in value]
+
         self.__alternativas = value
 
 
@@ -226,11 +215,8 @@ class questao_modelo:
         
         if not isinstance(value, str):
             raise TypeError("Correta deve ser str")
-        #FALTA AS REGRAS DE NEGÓCIO
-        #
-        #
-        #
-        #
+        value = value.strip()
+        
         self.__correta = value
             
         

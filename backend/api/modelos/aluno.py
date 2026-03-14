@@ -58,9 +58,6 @@ class aluno_modelo:
             raise TypeError("Nome do aluno deve ser uma string")
 
         value = value.strip().title()
-
-        if not value.isalpha():
-            raise ValueError("Nome do aluno não pode conter números")
         
         if len(value) < 5:
             raise ValueError("Nome do aluno deve ter ao menos 5 caracteres")
@@ -71,9 +68,6 @@ class aluno_modelo:
         for nome in value.split(): 
             if len(nome) < 2:
                 raise ValueError("Cada parte do nome deve conter ao menos 2 caracteres")
-        
-        if not value.isalpha():
-            raise ValueError("Nome do aluno não pode conter números")
         
         self.__nome_aluno = value
 
@@ -109,8 +103,8 @@ class aluno_modelo:
         if not isinstance(value, int):
             raise TypeError("Série deve ser int")
         
-        if value not in [1,2,3]:
-            raise ValueError("Série inválida")
+        if value < 0:
+            raise ValueError("Série deve ser maior que 0")
         
         self.__serie = value
 
@@ -122,13 +116,13 @@ class aluno_modelo:
     @situacao.setter
     def situacao(self, value):
         if value is None:
-            raise ValueError("Matriculado nulo")
+            raise ValueError("Situação do aluno nula")
 
         if not isinstance(value, str):
-            raise TypeError("Matriculado deve ser uma string")
+            raise TypeError("Situação do aluno deve ser uma string")
         
         if not value.isalpha():
-            raise ValueError("Matriculado não pode conter números")
+            raise ValueError("Situação do aluno não pode conter números")
 
         self.__situacao = value
 
@@ -139,20 +133,19 @@ class aluno_modelo:
 
     @email_aluno.setter
     def email_aluno(self, value):
-        if value is None:
-            raise ValueError("Email do aluno nulo")
+        if value != None:
 
-        if not isinstance(value, str):
-            raise TypeError("Email do aluno deve ser uma string")
+            if not isinstance(value, str):
+                raise TypeError("Email do aluno deve ser uma string")
 
-        value = value.strip()
+            value = value.strip()
 
-        if len(value) not in range(5,151):
-            raise ValueError("Email deve conter de 5 a 150 caracteres")
-        
-        padrao = "^[a-zA-Z0-9][a-zA-Z0-9._%+-]{0,63}@[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+            if len(value) not in range(5,151):
+                raise ValueError("Email deve conter de 5 a 150 caracteres")
+            
+            padrao = "^[a-zA-Z0-9][a-zA-Z0-9._%+-]{0,63}@[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 
-        if not re.match(padrao,value):
-            raise ValueError("Email inválido")
+            if not re.match(padrao,value):
+                raise ValueError("Email inválido")
 
-        self.__email_aluno = value
+            self.__email_aluno = value
