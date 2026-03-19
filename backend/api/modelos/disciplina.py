@@ -88,7 +88,7 @@ class disciplina_modelo:
 
         value = value.strip()
 
-        if value < 10:
+        if len(value) < 10:
             raise ValueError("Turma deve ter ao menos 10 caracteres")
         self.__turma = value
 
