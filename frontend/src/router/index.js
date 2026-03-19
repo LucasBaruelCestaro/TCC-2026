@@ -7,7 +7,7 @@ const routes = [
     name: 'Login',
     component: LoginTelaPrincipal
   }
-  // suas outras rotas...
+
 ]
 
 const router = createRouter({
