@@ -53,7 +53,21 @@ export default {
       }
       
       console.log('Credenciais:', credenciais)
+      
+      // Simulação de login
+      const usuarioSimulado = {
+        nome: this.email_usuario.split('@')[0],
+        email: this.email_usuario,
+        tipo: 'professor'
+      }
+      
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuarioSimulado))
+      localStorage.setItem('token', 'simulated-token-123')
+      
       this.$emit('login-enviado', credenciais)
+      
+      // Redireciona para a tela principal
+      this.$router.push('/acessar-provas')
     }
   }
 }
@@ -67,7 +81,7 @@ export default {
   width: 100%;
   max-width: 400px;
   border: 2px solid #000000;
-  overflow: hidden; /* Garante que o conteúdo respeite as bordas arredondadas */
+  overflow: hidden;
 }
 
 .logo-section {
@@ -75,7 +89,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #e0e0e0; /* Linha sutil de separação */
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .logo {
