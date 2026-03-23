@@ -4,7 +4,7 @@ class Questao:
     def __init__(self):
 
         self.__id_hash = None
-        self.__id_questao = None
+        self.__id_questao = None   #gerado automaticamente no programa
         self.__professor = None   #id do professor que cadastrou a questão no sistema
         self.__assunto = None
         self.__disciplina = None

@@ -4,9 +4,9 @@ class Disciplina:
     def __init__(self):
 
         self.__id_hash = None #string
-        self.__professor = None #objeto
-        self.__nome_disciplina = None #string
         self.__codigo_disciplina = None #string
+        self.__nome_disciplina = None #string
+        self.__professor = None #objeto
         self.__turma = None #string
         self.__alunos = None #lista com matrículas
 

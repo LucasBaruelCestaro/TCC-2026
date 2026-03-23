@@ -4,7 +4,7 @@ from disciplina import Disciplina
 class Prova:
     def __init__(self):
         self.__id_hash = None
-        self.__id_prova = None
+        self.__id_prova = None   #gerado automaticamente no cadastro da provas
         self.__id_turma = None   #id das turmas as quais farão essa prova
         self.__disciplina = None   #id da disciplina da prova
         self.__professor = None   #id do professor autor da prova
