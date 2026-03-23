@@ -1,7 +1,7 @@
 import re
-import aluno
+from aluno import Aluno
 
-class questao_modelo:
+class Responsavel:
     def __init__(self):
         
         self.__id_hash = None
@@ -21,6 +21,8 @@ class questao_modelo:
         
         if not isinstance(value, str):
             raise TypeError("Id deve ser uma string")
+        
+        self.__id_hash = value
         
     @property
     def nome_responsavel(self):
@@ -77,9 +79,9 @@ class questao_modelo:
     
     @aluno.setter
     def aluno(self, value):
-        if not isinstance(value, aluno):
+        if not isinstance(value, Aluno):
             raise ValueError("Aluno deve ser uma instância válida")
-        return self.__aluno
+        self.__aluno = value
     
     @property
     def telefone_responsavel(self):

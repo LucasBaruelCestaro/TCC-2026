@@ -1,6 +1,6 @@
 import re
 
-class aluno_modelo:
+class Aluno:
     def __init__(self):
         
         self.__id_hash = None #string
@@ -24,7 +24,7 @@ class aluno_modelo:
             raise TypeError("Id deve ser uma string")
 
         value = value.strip()
-        self.__id = value
+        self.__id_hash = value
 
 
     @property
@@ -66,8 +66,8 @@ class aluno_modelo:
             raise ValueError("Nome do aluno deve ter ao menos um sobrenome")
         
         for nome in value.split(): 
-            if len(nome) < 2:
-                raise ValueError("Cada parte do nome deve conter ao menos 2 caracteres")
+            if len(nome) < 3:
+                raise ValueError("Cada parte do nome deve conter ao menos 3 caracteres")
         
         self.__nome_aluno = value
 
@@ -103,7 +103,7 @@ class aluno_modelo:
         if not isinstance(value, int):
             raise TypeError("Série deve ser int")
         
-        if value < 0:
+        if value <= 0:
             raise ValueError("Série deve ser maior que 0")
         
         self.__serie = value

@@ -1,6 +1,6 @@
 import re
 
-class professor_modelo:
+class Professor:
     def __init__(self):
         self.__id_hash = None #string
         self.__registro_professor = None #int
@@ -20,7 +20,7 @@ class professor_modelo:
             raise TypeError("Id deve ser uma string")
 
         value = value.strip()
-        self.__id = value
+        self.__id_hash = value
 
 
     @property
@@ -35,7 +35,6 @@ class professor_modelo:
         if not isinstance(value, int):
             raise TypeError("Registro do professor deve ser um int")
 
-        value = value.strip()
         self.__registro_professor = value
 
 
@@ -60,7 +59,7 @@ class professor_modelo:
             raise ValueError("Nome do professor deve ter ao menos um sobrenome")
         
         for nome in value.split(): 
-            if len(nome) < 2:
+            if len(nome) < 3:
                 raise ValueError("Cada parte do nome deve conter ao menos 3 caracteres")
 
         self.__nome_professor = value

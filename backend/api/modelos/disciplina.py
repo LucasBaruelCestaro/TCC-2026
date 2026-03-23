@@ -1,6 +1,6 @@
-import professor
+from professor import Professor
 
-class disciplina_modelo:
+class Disciplina:
     def __init__(self):
 
         self.__id_hash = None #string
@@ -32,7 +32,7 @@ class disciplina_modelo:
 
     @professor.setter
     def professor(self, value):
-        if not isinstance(value, professor):
+        if not isinstance(value, Professor):
             raise TypeError("Professor deve ser uma instância válida")
 
         self.__professor = value
@@ -104,6 +104,9 @@ class disciplina_modelo:
 
         if not isinstance(value, list):
             raise TypeError("Alunos deve ser uma lista")
+        
+        if len(value) == 0:
+            raise ValueError("Lista de alunos não pode ser vazia")
         
         for matricula in value:
             if not isinstance(matricula, int):

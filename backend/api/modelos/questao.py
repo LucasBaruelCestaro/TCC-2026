@@ -1,8 +1,9 @@
-import professor
+from professor import Professor
 
-class questao_modelo:
+class Questao:
     def __init__(self):
 
+        self.__id_hash = None
         self.__id_questao = None
         self.__professor = None   #id do professor que cadastrou a questão no sistema
         self.__assunto = None
@@ -14,6 +15,20 @@ class questao_modelo:
         self.__alternativas = None
         self.__alternativa_correta = None 
 
+    @property
+    def id_hash(self):
+        return self.__id_hash
+    
+    @id_hash.setter
+    def id_hash(self, value):
+        if value is None:
+            raise ValueError("Id hash nulo")
+        
+        if not isinstance(value, str):
+            raise TypeError("Id deve ser uma string")
+        
+        self.__id_hash = value
+    
     #GET/SET ID DA QUESTÃO
     @property
     def id_questao(self):
@@ -39,7 +54,7 @@ class questao_modelo:
 
     @professor.setter
     def professor(self, value):
-        if not isinstance(value, professor):
+        if not isinstance(value, Professor):
             raise ValueError("Professor deve ser uma instância válida")
         self.__professor = value
 
@@ -60,7 +75,7 @@ class questao_modelo:
         if len(value) < 2:
             raise ValueError("Assunto deve ter mais de 2 caracteres")
         
-        if value.isnumeric:
+        if value.isnumeric():
             raise ValueError("Assunto não pode conter apenas números")
         self.__assunto = value
 
@@ -78,7 +93,7 @@ class questao_modelo:
         if not isinstance(value, list):
             raise TypeError("Diciplina(as) devem ser uma lista")
 
-        value = [disciplina.strip().lower() for disciplina in value]
+        value = [d.strip().lower() for d in value]
 
         for disciplina in value:
             if not isinstance(disciplina, str):
@@ -178,7 +193,7 @@ class questao_modelo:
         if len(value) < 3:
             raise ValueError("Autor deve conter mais de 3 caracteres")
         
-        if value.isnumeric:
+        if value.isnumeric():
             raise ValueError("Autor não pode conter apenas números")
         
         self.__autor = value
@@ -191,6 +206,9 @@ class questao_modelo:
 
     @alternativas.setter
     def alternativas(self, value):
+        if self.tipo_questao is None:
+            raise ValueError("Defina o tipo da questão antes das alternativas")
+        
         if self.tipo_questao == "Objetiva":
             if value is None:
                 raise ValueError("Alternativas nula")
@@ -198,7 +216,14 @@ class questao_modelo:
             if not isinstance(value, list):
                 raise TypeError("Alternativas deve ser list")
             
+            for alternativa in value:
+                if not isinstance(alternativa, str):
+                    raise TypeError("Alternativas devem ser strings")
+            
             value = [alternativa.strip() for alternativa in value]
+
+            if len(value) < 5:
+                raise ValueError("Deve ter pelo menos 5 alternativas")
 
         self.__alternativas = value
 
@@ -206,18 +231,21 @@ class questao_modelo:
     #GET/SET ALTERNATIVA CORRETA
     @property
     def alternativa_correta(self):
-        return self.__correta
-
+        return self.__alternativa_correta
+    
     @alternativa_correta.setter
-    def correta(self, value):
+    def alternativa_correta(self, value):
         if value is None:
-            raise ValueError("Correta nula")
+            raise ValueError("Alternativa correta nula")
         
         if not isinstance(value, str):
-            raise TypeError("Correta deve ser str")
+            raise TypeError("Alternativa correta deve ser str")
         value = value.strip()
+
+        if self.alternativas is None:
+            raise ValueError("Alternativas devem ser definidas antes da correta")
+
+        if value not in self.alternativas:
+            raise ValueError("Alternativa correta deve estar na lista de alternativas")
         
-        self.__correta = value
-            
-        
-                
+        self.__alternativa_correta = value

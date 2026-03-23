@@ -1,9 +1,9 @@
-import professor
-import disciplina
+from professor import Professor
+from disciplina import Disciplina
 
-class prova_modelo:
+class Prova:
     def __init__(self):
-        
+        self.__id_hash = None
         self.__id_prova = None
         self.__id_turma = None   #id das turmas as quais farão essa prova
         self.__disciplina = None   #id da disciplina da prova
@@ -15,6 +15,20 @@ class prova_modelo:
         self.__data_de_aplicacao = None 
         self.__id_questao = None   #id das questões que contém a determinada prova
 
+    @property
+    def id_hash(self):
+        return self.__id_hash
+    
+    @id_hash.setter
+    def id_hash(self, value):
+        if value is None:
+            raise ValueError("Id hash nulo")
+        
+        if not isinstance(value, str):
+            raise TypeError("Id deve ser uma string")
+        
+        self.__id_hash = value
+    
     @property
     def id_prova(self):
         return self.__id_prova
@@ -58,8 +72,8 @@ class prova_modelo:
         return self.__disciplina
 
     @disciplina.setter
-    def id_disciplina(self, value):
-        if not isinstance(value, disciplina):
+    def disciplina(self, value):
+        if not isinstance(value, Disciplina):
             raise ValueError("Disciplina deve ser uma instância válida")
         self.__disciplina = value
 
@@ -70,7 +84,7 @@ class prova_modelo:
 
     @professor.setter
     def professor(self, value):
-        if not isinstance(value, professor):
+        if not isinstance(value, Professor):
             raise ValueError("Professor deve ser uma instância válida")
         self.__professor = value
 
@@ -86,6 +100,8 @@ class prova_modelo:
         if not isinstance(value, str):
             raise TypeError("Status deve ser string")
         value = value.strip()
+        if value not in ["Corrigida", "Não Corrigida"]:
+            raise ValueError("Status inválido")
         self.__status = value
 
 
@@ -99,7 +115,9 @@ class prova_modelo:
             raise ValueError("Tipo nulo")
         if not isinstance(value, str):
             raise TypeError("Tipo deve ser string")
-        value = value.strip()
+        value = value.strip().title()
+        if value not in ["Objetiva", "Dissertativa"]:
+            raise ValueError("Tipo inválido")
         self.__tipo = value
 
 
@@ -111,9 +129,10 @@ class prova_modelo:
     def ano(self, value):
         if value is None:
             raise ValueError("Ano nulo")
-        if not isinstance(value, str):
-            raise TypeError("Ano deve ser string")
-        value = value.strip()
+        if not isinstance(value, int):
+            raise TypeError("Ano deve ser int")
+        if value <= 0:
+            raise ValueError("Ano deve ser maior que zero")
         self.__ano = value
 
 
@@ -154,9 +173,12 @@ class prova_modelo:
         if value is None:
             raise ValueError("Id da questão nulo")
         if not isinstance(value, list):
-            raise TypeError("Id da questão deve ser lista")
+            raise TypeError("Id questão deve ser lista")
         if len(value) < 5:
             raise ValueError("Número de questões insuficientes")
+        for questao in value:
+            if not isinstance(questao, int):
+                raise TypeError("Cada id deve ser int")
         self.__id_questao = value
 
 
